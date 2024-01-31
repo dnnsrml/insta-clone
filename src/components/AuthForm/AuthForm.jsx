@@ -8,9 +8,31 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const AuthForm = () => {
+  /* login state */
   const [isLogin, setIsLogin] = useState(true);
+
+  /* useNavigate from react router dom */
+  const navigate = useNavigate();
+
+  /* form text box input values state */
+  const [inputs, setInputs] = useState({
+    email: "",
+    password: "",
+    confirmmPassword: "",
+  });
+
+  /* handle submit button */
+  const handleAuth = () => {
+    if (!inputs.email || !inputs.password) {
+      alert("Please fill up all the fields!");
+      return;
+    }
+    navigate("/");
+  };
+
   return (
     <>
       <Box border={"1px solid gray"} borderRadius={4} padding={5}>
@@ -21,20 +43,45 @@ const AuthForm = () => {
             cursor={"pointer"}
             alt="Instagram Logo"
           />
-          <Input placeholder="Email" fontSize={14} type="email" />
-          <Input placeholder="Password" fontSize={14} type="password" />
+          <Input
+            id="email"
+            placeholder="Email"
+            fontSize={14}
+            type="email"
+            value={inputs.email}
+            onChange={(e) => setInputs({ ...inputs, email: e.target.value })}
+          />
+          <Input
+            id="password"
+            placeholder="Password"
+            fontSize={14}
+            type="password"
+            value={inputs.password}
+            onChange={(e) => setInputs({ ...inputs, password: e.target.value })}
+          />
 
           {/* check if this is the login form */}
           {!isLogin ? (
             <Input
+              id="confirmPassword"
               placeholder="Confirm Password"
               fontSize={14}
               type="password"
+              value={inputs.confirmmPassword}
+              onChange={(e) =>
+                setInputs({ ...inputs, confirmmPassword: e.target.value })
+              }
             />
           ) : null}
 
           {/* the submit button */}
-          <Button w={"full"} colorScheme="blue" size={"sm"} fontSize={14}>
+          <Button
+            w={"full"}
+            colorScheme="blue"
+            size={"sm"}
+            fontSize={14}
+            onClick={handleAuth}
+          >
             {isLogin ? "Login" : "Sign Up"}
           </Button>
 
